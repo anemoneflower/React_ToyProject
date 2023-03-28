@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  const [selected, setSelected] = useState("");
+  const [coinIdx, setCoinIdx] = useState(0);
+  const [myMoney, setMoney] = useState(0);
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => { setCoins(json); setLoading(false) })
+  }, [])
+  const onWriteMoney = (event) => setMoney(event.target.value)
+  const onSelect = (event) => { setSelected(event.target.value); setCoinIdx(event.target.selectedIndex) }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>The Coins! ({coins.length})</h1>
+      {loading ? <strong>Loading...</strong> : null}
+      <input value={myMoney > 0 ? myMoney : ""} placeholder="How much do you have?" onChange={onWriteMoney}></input>
+      <select value={selected} onChange={onSelect}>
+        {coins.map((coin) => <option key={coin.id}>{coin.name}({coin.symbol}) : ${coin.quotes.USD.price}</option>)}
+      </select>
+      <hr />
+      {!loading ? <h3>You can buy {myMoney / coins[coinIdx].quotes.USD.price} {coins[coinIdx].name}</h3> : null}
     </div>
   );
 }
