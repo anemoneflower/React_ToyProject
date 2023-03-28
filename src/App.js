@@ -15,14 +15,17 @@ function App() {
   const onSelect = (event) => { setSelected(event.target.value); setCoinIdx(event.target.selectedIndex) }
   return (
     <div className="App">
-      <h1>The Coins! ({coins.length})</h1>
-      {loading ? <strong>Loading...</strong> : null}
-      <input value={myMoney > 0 ? myMoney : ""} placeholder="How much do you have?" onChange={onWriteMoney}></input>
-      <select value={selected} onChange={onSelect}>
-        {coins.map((coin) => <option key={coin.id}>{coin.name}({coin.symbol}) : ${coin.quotes.USD.price}</option>)}
-      </select>
-      <hr />
-      {!loading ? <h3>You can buy {myMoney / coins[coinIdx].quotes.USD.price} {coins[coinIdx].name}</h3> : null}
+      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? <strong>Loading...</strong> :
+        <div>
+          <input value={myMoney > 0 ? myMoney : ""} placeholder="How much do you have?" onChange={onWriteMoney}></input>
+          <select value={selected} onChange={onSelect}>
+            {coins.map((coin) => <option key={coin.id}>{coin.name}({coin.symbol}) : ${coin.quotes.USD.price}</option>)}
+          </select>
+          <hr />
+          <h3>You can buy {myMoney / coins[coinIdx].quotes.USD.price} {coins[coinIdx].name}</h3>
+        </div>
+      }
     </div>
   );
 }
