@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./Home.module.css";
+import NavBar from "../components/NavBar";
+import TripleSpinner from "../components/Spinner";
 
 function Detail() {
   const { id } = useParams();
@@ -18,7 +21,11 @@ function Detail() {
   })
   return (
     <div className="App">
-      {loading ? <strong>Loading...</strong> :
+      <NavBar />
+      {loading ?
+        <div className={styles.loader}>
+          <TripleSpinner />
+        </div> :
         <div>
           <h1>{title}</h1>
           <p>{description}</p>

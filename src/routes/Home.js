@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Movie from "../components/Movie";
 import styles from "./Home.module.css";
+import NavBar from "../components/NavBar";
+import TripleSpinner from "../components/Spinner";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -18,21 +20,24 @@ function Home() {
     <div className={styles.container}>
       {loading ? (
         <div className={styles.loader}>
-          <span>Loading...</span>
+          <TripleSpinner />
         </div>
       ) :
-        <div className={styles.movies}>
-          {movies.map((movie) => <Movie
-            key={movie.id}
-            id={movie.id}
-            year={movie.year}
-            coverImg={movie.medium_cover_image}
-            title={movie.title}
-            rating={movie.rating}
-            summary={movie.summary}
-            genres={movie.genres}
-          />
-          )}
+        <div>
+          <NavBar />
+          <div className={styles.movies}>
+            {movies.map((movie) => <Movie
+              key={movie.id}
+              id={movie.id}
+              year={movie.year}
+              coverImg={movie.medium_cover_image}
+              title={movie.title}
+              rating={movie.rating}
+              summary={movie.summary}
+              genres={movie.genres}
+            />
+            )}
+          </div>
         </div>
       }
     </div>
